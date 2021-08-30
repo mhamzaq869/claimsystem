@@ -79,7 +79,7 @@
                                   <div class="mt-3 text-center">
                                     <a href="{{ route('vendor.single',$vendor->id) }}"><h5 class="card-title">{{ $vendor->name }}</h5></a>
                                     @for ($i = 0; $i < 5; $i++)
-                                    @if ($i < $vendor->rate) <i class="fa fa-star
+                                    @if ($i < $vendor->review->avg('rating')) <i class="fa fa-star
                                         text-warning"></i>
                                     @else
                                         <i class="fa fa-star"></i>
