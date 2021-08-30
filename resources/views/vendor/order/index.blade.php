@@ -55,12 +55,12 @@
             @foreach ( $order->cart as $ord)
                @if($ord->product->user->id == Auth::user()->id)
 
-            @php
-                if($order->payment_method == 'stripe'){
-                    array_push($generated_amount,$order->total_amount);
-                }
-                $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
-            @endphp
+                @php
+                    if($order->payment_method == 'stripe'){
+                        array_push($generated_amount,$order->total_amount);
+                    }
+                    $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
+                @endphp
                 <tr>
                     <td>{{$order->id}}</td>
                     <td>{{$order->order_number}}</td>

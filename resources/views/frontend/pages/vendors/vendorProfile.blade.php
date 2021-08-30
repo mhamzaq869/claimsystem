@@ -151,11 +151,13 @@
                         <h5>{{ $vendors->name }}</h5>
                         <h6 class="mt-1">{{ $vendors->role }}</h6>
                         <p class="my-2">
+
                             @for ($i = 0; $i < 5; $i++)
-                                @if ($i < $vendors->rate) <i class="fa fa-star
+                                @if ($i < $vendors->review->avg('rating')) <i class="fa fa-star
                                     text-warning"></i>
                                 @else
-                                    <i class="fa fa-star"></i> @endif
+                                    <i class="fa fa-star"></i>
+                                    @endif
                             @endfor
                         </p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">

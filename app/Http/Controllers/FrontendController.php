@@ -458,7 +458,8 @@ class FrontendController extends Controller
     }
     public function viewVendor($id)
     {
-        $vendors = User::find($id);
+        $vendors = User::with('review')->find($id);
+        // dd($vendors);
         return view('frontend.pages.vendors.vendorProfile')->with('vendors',$vendors);
     }
     public function vendorAllProducts($id)

@@ -64,7 +64,7 @@ class User extends Authenticatable
     }
 
     public function review(){
-        return $this->hasMany('App\Models\ProfileReview','by','id');
+        return $this->hasMany('App\Models\ProfileReview','to','id');
     }
     public function cart()
     {
