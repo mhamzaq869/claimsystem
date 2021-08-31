@@ -32,6 +32,11 @@
             <span>Orders</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link @if(\Request::path() == 'messages') text-orange @endif" href="{{url('messages')}}">
+            <span>Message</span>
+        </a>
+    </li>
     @endif
 
 

@@ -13,7 +13,7 @@ use App\Models\Message;
 use App\Models\Payout;
 use App\Models\ProfileReview;
 use Illuminate\Console\Scheduling\Schedule;
-
+use App\User;
 class ProjectController extends Controller
 {
     private $stripe;
@@ -309,7 +309,6 @@ class ProjectController extends Controller
 
     public function chat($id,$project_id = null)
     {
-
        $chats = Chat::with('user')->where('user_id',Auth::user()->id)->where('to_user',$id)->get();
     //    $chats = Chat::where('user_id',Auth::user()->id)->orWhere('to_user',Auth::user()->id)->where('to_user',$id)->orWhere('user_id',$id)->get();
         if($chats->count() == 0 ){
@@ -339,9 +338,8 @@ class ProjectController extends Controller
 
     public function fetchMessages($id,$to)
     {
+        $messages = \DB::select('select * from `chats` where (`user_id` = ? or `to_user` = ?) and (`to_user` = ? or `user_id` = ?)', [$id,$id,$to,$to]);
 
-        $messages = Chat::where('user_id',$id)->orWhere('to_user',$id)->where('to_user',$to)->orWhere('user_id',$to)->get();
-        // $messages = Chat::with('user')->where('contract_id',$id)->get();
         $all = [];
 
         foreach($messages as $message){
@@ -392,7 +390,7 @@ class ProjectController extends Controller
 
         $all = [];
 
-        $messages = Chat::where('user_id',Auth::user()->id)->orWhere('to_user',Auth::user()->id)->where('to_user',$request->to)->orWhere('user_id',$request->to)->get();
+        $messages = \DB::select('select * from `chats` where (`user_id` = ? or `to_user` = ?) and (`to_user` = ? or `user_id` = ?)', [Auth::user()->id,Auth::user()->id,$request->to,$request->to]);
 
 
         foreach($messages as $message){
@@ -417,58 +415,12 @@ class ProjectController extends Controller
 
     }
 
-
-    // public function sendMessage(Request $request)
-    // {
-
-    // $user = Auth::user();
-    // $message = Chat::create([
-    //     'user_id' => Auth::user()->id,
-    //     'contract_id' => $request->contract_id,
-    //     'message' => $request->message,
-    // ]);
-
-
-    // $rights = ($message->user_id == Auth::user()->id)?"admin":"agent";
-    // $pos = ($message->user_id == Auth::user()->id)?"right":"left";
-    // $img = ($message->user_id == Auth::user()->id)?"http://placehold.it/50/FA6F57/fff&text=".substr(Auth::user()->name,0,1):"http://placehold.it/50/55C1E7/fff&text=".substr($message->user->name,0,1);
-
-    // $html = '<li class="'.$rights.' clearfix">';
-    // $html .= '<span class="chat-img '. $pos.' clearfix mx-2">';
-    // $html .= '<img src=" '. $img.'" class="img-circle" /></span>';
-    // $html .= '<div class="chat-body clearfix"><div class="header clearfix">';
-    // $html .= '<strong class="primary-font">'.$message->user->name.'</strong>';
-    // $html .= '<small class="right text-muted"><span class="glyphicon glyphicon-time"></span></small></div>';
-    // $html .= '<p>'.$message->message.'</p>';
-    // $html .= '</div></li>';
-
-
-    // return response([$html],200);
-
-    // }
-
-    public function allChatUser()
-    {
-
-
-    }
-
     public function message() {
 
-        // if(Auth::user()->role == 'vendor'){
-        //     $chatts = Chat::where('to_user',Auth::user()->id)->get();
-        //     $chats = $chatts->groupBy('to_user');
-        // }else{
-        //     $chatts = Chat::where('user_id',Auth::user()->id)->get();
-        //      $chats = $chatts->groupBy('to_user');
+        $chatts = Chat::where('user_id',Auth::user()->id)->get();
+        $chats = User::whereIn('id',$chatts->pluck('to_user')->unique()->flatten())->get();
 
-        // }
-
-        $chatts = Chat::where('to_user',Auth::user()->id)->get();
-        $chats = $chatts->groupBy('to_user');
-
-
-        return view('user.chat.index',compact('chats'));
+        return view('user.chat.index',compact('chats','chatts'));
     }
 
 

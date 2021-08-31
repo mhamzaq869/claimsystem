@@ -35,26 +35,7 @@
             <div class="inbox_msg border-0">
                 <div class="mesgs w-100">
                     <div class="msg_history" id="messages">
-                        {{-- @foreach ($chats as $chat)
-                            @if ($chat->user_id == Auth::user()->id)
-                            <div class="outgoing_msg">
-                                <div class="sent_msg">
-                                    <p>{{$chat->message}}</p>
-                                    <span class="time_date"> {{date('H:i A',strtotime($chat->created_at))}}   |  {{date('M d',strtotime($chat->created_at))}}</span>
-                                </div>
-                            </div>
-                            @else
-                            <div class="incoming_msg">
-                                <div class="incoming_msg_img">
-                                    <img style="width:50px" src="{{asset($chat->toUser->photo ?? "upload/profile/profile.jpg")}}" alt="sunil">
-                                </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>{{$chat->message}}</p>
-                                </div>
-                            </div>
-                            @endif
-                        @endforeach --}}
+
                     </div>
                     <div class="type_msg">
                     <div class="input_msg_write">

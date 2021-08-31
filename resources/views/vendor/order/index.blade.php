@@ -54,7 +54,6 @@
 
             @foreach ( $order->cart as $ord)
                @if($ord->product->user->id == Auth::user()->id)
-
                 @php
                     if($order->payment_method == 'stripe'){
                         array_push($generated_amount,$order->total_amount);
