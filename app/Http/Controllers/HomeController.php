@@ -11,6 +11,7 @@ use App\Models\Userdetail;
 use App\Models\Contract;
 use App\Models\Project;
 use App\Models\Bid;
+use App\Models\Task;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -48,10 +49,8 @@ class HomeController extends Controller
             return view('user.index',compact('projects','orders','contract'));
         }
         else{
-            $contract = Contract::where('status','active')->get();
-
+            $contract = Contract::where('status','active')->where('req_by_user',Auth::user()->id)->get();
             $userss = User::where('role','dboy')->get();
-
 
             $dboy = [];
             foreach($userss as $user):
@@ -68,9 +67,8 @@ class HomeController extends Controller
 
 
                 endforeach;
-            // dd($dboy);
-            // dd($contract[0]->project->title);
-            return view('user.index')->with('contract',$contract)->with('dboy',$dboy);
+
+            return view('user.index',compact('contract','dboy'));
         }
     }
 

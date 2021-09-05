@@ -63,6 +63,11 @@
             <span>Message</span>
         </a>
     </li>
+    <li class="nav-item @if(\Request::path() == 'user/dboy') bg-orange @endif">
+        <a class="nav-link pl-2 text-dark user-hover" href="{{url('user/dboy')}}">
+            <span>Delivery Boy</span>
+        </a>
+    </li>
     @endif
 
 

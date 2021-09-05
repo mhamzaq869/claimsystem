@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Task;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+
 class UsersController extends Controller
 {
     /**
@@ -105,7 +109,7 @@ class UsersController extends Controller
         // dd($request->all());
         $data=$request->all();
         // dd($data);
-        
+
         $status=$user->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated');
@@ -134,5 +138,12 @@ class UsersController extends Controller
             request()->session()->flash('error','There is an error while deleting users');
         }
         return redirect()->route('users.index');
+    }
+
+
+    public function task()
+    {
+        $tasks = Task::where('to_user',Auth::user()->id)->get();
+        return view('user.dboy',compact('tasks'));
     }
 }

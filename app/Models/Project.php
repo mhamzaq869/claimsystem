@@ -23,5 +23,7 @@ class Project extends Model
     public function contract(){
         return $this->hasOne(Contract::class);
     }
-
+    public function task(){
+        return $this->hasMany('App\Models\Task');
+    }
 }

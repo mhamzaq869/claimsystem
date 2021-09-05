@@ -130,7 +130,7 @@
         @endif
 
 
-        @if (isset($contract) && Auth::user()->role == 'user' || Auth::user()->role == 'vendor' )
+        @if ((isset($contract) && Auth::user()->role == 'user') || Auth::user()->role == 'vendor')
 
             @foreach ($contract as $item)
 
@@ -179,7 +179,7 @@
                                                             class="rounded-circle">
                                                     @endif
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <h2>{{ $boy->user->name }}</h2>
                                                     {!! $boy->bio !!}
                                                 </div>
@@ -202,8 +202,25 @@
                                                         @endfor
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <a class="btn btn-primary" href="{{url('messages/'.$boy->user->id.'/'.$boy->user->id)}}">chat</a>
+                                                <div class="col-md-4 d-inline-block">
+                                                    @if (\App\Models\Task::where('dboy',$boy->user->id)->first())
+                                                    <i class="fas fa-check-circle text-success"></i> Assigned
+                                                    @else
+                                                    <form action="{{route('assign.task')}}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="dboy" value="{{$boy->user->id}}">
+                                                        <select name="project_id">
+                                                            @foreach ($contract as $ct)
+                                                                <option value="{{ $ct->project->id }}">
+                                                                    {{ $ct->project->title }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <button class="btn btn-info" type="submit">Assign</button>
+                                                    </form>
+                                                    @endif
+
+                                                    <a class="btn btn-primary"
+                                                        href="{{ url('messages/' . $boy->user->id) }}">chat</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -214,6 +214,7 @@ Route::group(['prefix' => '/user', 'middleware' => ['user']], function () {
     Route::post('review-vendor', 'ProjectController@acceptSubmitWork')->name('user.review');
     Route::get('fetchBider/{id}','ProjectController@fetchBiderUserToChat');
 
+    Route::get('dboy','UsersController@task');
 });
 
 // Realtime Chat messages
@@ -226,7 +227,6 @@ Route::get('messages/{id}/{project?}', 'ProjectController@chat');
 Route::get('/getChatMessages/{id}/{to}','ProjectController@fetchMessages');
 Route::post('sendMessages','ProjectController@sendMessages');
 Route::post('/sendOffer', 'ProjectController@sendOfferMessage');
-// Route::post('messages', 'ProjectController@fetchMessages');
 
 
 
@@ -267,6 +267,9 @@ Route::group(['prefix' => '/vendor', 'middleware' => ['auth', 'vendor']], functi
     //bank
     Route::get('/viewbank', "VendorController@viewBank")->name('vendor.viewbank');
     Route::post('/addbank', "VendorController@addBank")->name('vendor.bank');
+
+    //Task
+    Route::post('assignTask','VendorController@assignTask')->name('assign.task');
 });
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
