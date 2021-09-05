@@ -8,6 +8,7 @@ use App\Models\Contract;
 use App\Models\Order;
 use App\Models\Payout;
 use App\Models\Project;
+use App\Models\Task;
 use App\Models\Userdetail;
 use App\Models\Withdrawn;
 use App\Notifications\StatusNotification;
@@ -265,4 +266,18 @@ class VendorController extends Controller
         return redirect()->back()->with('success','Bank Detail Added Successfully!');
     }
 
+
+    public function assignTask(Request $request)
+    {
+        $to_user = Contract::where('project_id',$request->project_id)->first()->acc_by_user;
+
+        Task::create([
+            'user_id' => Auth::user()->id,
+            'project_id' => $request->project_id,
+            'dboy_id' => $request->dboy,
+            'to_user' => $to_user
+        ]);
+
+        return redirect()->back();
+    }
 }
